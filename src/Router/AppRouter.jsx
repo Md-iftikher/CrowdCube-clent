@@ -5,10 +5,11 @@ import AllCampaigns from "../Pages/AllCampaigns";
 import AddNewCampaign from "../Pages/AddNewCampaign";
 import MyCampaigns from "../Pages/MyCampaigns";
 import MyDonations from "../Pages/MyDonations";
-import Details from "../Pages/CampaignDetails";
-import NotFound from "../Pages/ErrorPage";
-import HomeLayout from "./Layout/HomeLayout"; // Assuming you have a layout component
-import PrivateRoute from "./Components/PrivateRoute"; // Ensure this is the correct path
+import CampaignDetails from "../Pages/CampaignDetails";
+import ErrorPage from "../Pages/ErrorPage";
+import PrivateRoutes from "./PrivateRoutes ";
+import Login from "../Pages/Login";
+import Register from "../Pages/Register";
 
 const AppRouter = () => {
   const router = createBrowserRouter([
@@ -21,23 +22,26 @@ const AppRouter = () => {
         {
           path: "/my-campaigns",
           element: (
-            <PrivateRoute>
+            <PrivateRoutes>
               <MyCampaigns />
-            </PrivateRoute>
+            </PrivateRoutes>
           ),
         },
         {
           path: "/my-donations",
           element: (
-            <PrivateRoute>
+            <PrivateRoutes>
               <MyDonations />
-            </PrivateRoute>
+            </PrivateRoutes>
           ),
         },
-        { path: "/details/:id", element: <Details /> },
-        { path: "*", element: <NotFound /> },
+        { path: "/details/:id", element: <CampaignDetails></CampaignDetails> },
+        { path: "/login", element: <Login /> },
+        { path: "/register", element: <Register /> },
       ],
     },
+
+    { path: "*", element: <ErrorPage></ErrorPage> },
   ]);
 
   return <RouterProvider router={router} />;

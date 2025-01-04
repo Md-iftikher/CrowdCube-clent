@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Details = () => {
+const CampaignDetails = () => {
     return (
         <div>
-            {/* Campaign details page content goes here */}
+            this is campaindetails
         </div>
     );
 };
 
-export default Details;
+export default CampaignDetails;
