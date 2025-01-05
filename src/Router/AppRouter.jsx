@@ -19,7 +19,7 @@ const AppRouter = () => {
       element: <Home />,
       children: [
         { path: "/all-campaigns", element: <AllCampaigns /> },
-        { path: "/add-new-campaign", element: <AddNewCampaign /> },
+        // { path: "/add-new-campaign", element: <AddNewCampaign /> },
         {
           path: "/my-campaigns",
           element: (
@@ -36,15 +36,22 @@ const AppRouter = () => {
             </PrivateRoutes>
           ),
         },
-        // {
-        //   path: "/add-new-campaign",
-        //   element: (
-        //     <PrivateRoutes>
-        //       <AddNewCampaign />
-        //     </PrivateRoutes>
-        //   ),
-        // },
-        { path: "/details/:id", element: <CampaignDetails></CampaignDetails> },
+        {
+          path: "/add-new-campaign",
+          element: (
+            <PrivateRoutes>
+              <AddNewCampaign />
+            </PrivateRoutes>
+          ),
+        },
+        {
+          path: "/details/:id",
+          element: (
+            <PrivateRoutes>
+              <CampaignDetails></CampaignDetails>
+            </PrivateRoutes>
+          ),
+        },
         { path: "/login", element: <Login /> },
         { path: "/register", element: <Register /> },
       ],
