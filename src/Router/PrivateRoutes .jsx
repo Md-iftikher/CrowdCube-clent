@@ -1,27 +1,29 @@
-// // PrivateRoute.js
-// import React, { useContext } from 'react';
-// import { Navigate } from 'react-router';
-// // import { AuthContext } from '../Provider/AuthProvider';
+import React, { useContext, useState } from 'react';
+import { Navigate } from 'react-router';
+import { AuthContext } from '../Provider/AuthProvider';
+import Swal from 'sweetalert2';
 
-// const PrivateRoute = ({ children }) => {
-//     // const { user } = useContext(AuthContext);
+const PrivateRoutes = ({ children }) => {
+    const { user } = useContext(AuthContext);
+    const [alertShown, setAlertShown] = useState(false);
 
-//     if (!user) {
-//         return <Navigate to="/login" replace />;
-//     }
+    if (!user) {
+        if (!alertShown) {
+            setAlertShown(true);
+            Swal.fire({
+                title: 'Access Denied',
+                text: 'Please log in to access this page.',
+                icon: 'warning',
+                confirmButtonText: 'Go to Login',
+            }).then(() => {
+                setAlertShown(false); // Reset alert for future redirects
+            });
+        }
 
-//     return children;
-// };
+        return <Navigate to="/login" replace />;
+    }
 
-// export default PrivateRoute;
-import React from 'react';
-
-const PrivateRoutes  = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+    return children;
 };
 
-export default PrivateRoutes ;
+export default PrivateRoutes;

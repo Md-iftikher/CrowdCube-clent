@@ -5,7 +5,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 
 const Navbar = () => {
   const { user, handleLogOut } = useContext(AuthContext);
-  console.log(user);
+  // console.log(user);
 
   return (
     <div className="navbar bg-[#4b5bb8] text-white flex justify-between items-center p-4">
@@ -26,10 +26,10 @@ const Navbar = () => {
             <Link to="/all-campaigns">All Campaigns</Link>
           </li>
           <li>
-            {user && <Link to="/add-new-campaign">Add New Campaign</Link>}
+            { <Link to="/add-new-campaign">Add New Campaign</Link>}
           </li>
-          <li>{user && <Link to="/my-campaigns">My Campaigns</Link>}</li>
-          <li>{user && <Link to="/my-donations">My Donations</Link>}</li>
+          <li>{<Link to="/my-campaigns">My Campaigns</Link>}</li>
+          <li>{<Link to="/my-donations">My Donations</Link>}</li>
         </ul>
       </div>
 
@@ -37,7 +37,7 @@ const Navbar = () => {
         <Link to="/dashboard" className="hidden md:inline">
           <img
             className="w-12 h-12 rounded-full"
-            src={(user&&user.photoURL )|| ProfileIcon}
+            src={user && user.photoURL ? user.photoURL : ProfileIcon} 
             alt="Profile"
           />
         </Link>

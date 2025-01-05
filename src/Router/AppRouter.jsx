@@ -2,7 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "../Pages/Home";
 import AllCampaigns from "../Pages/AllCampaigns";
-import AddNewCampaign from "../Pages/AddNewCampaign";
+
 import MyCampaigns from "../Pages/MyCampaigns";
 import MyDonations from "../Pages/MyDonations";
 import CampaignDetails from "../Pages/CampaignDetails";
@@ -10,6 +10,7 @@ import ErrorPage from "../Pages/ErrorPage";
 import PrivateRoutes from "./PrivateRoutes ";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
+import AddNewCampaign from "../Pages/AddNewCampaign";
 
 const AppRouter = () => {
   const router = createBrowserRouter([
@@ -35,6 +36,14 @@ const AppRouter = () => {
             </PrivateRoutes>
           ),
         },
+        // {
+        //   path: "/add-new-campaign",
+        //   element: (
+        //     <PrivateRoutes>
+        //       <AddNewCampaign />
+        //     </PrivateRoutes>
+        //   ),
+        // },
         { path: "/details/:id", element: <CampaignDetails></CampaignDetails> },
         { path: "/login", element: <Login /> },
         { path: "/register", element: <Register /> },
