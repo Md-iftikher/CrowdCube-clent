@@ -99,7 +99,7 @@ const AllCampaigns = () => {
                     </td>
                    
                     <td className="px-6 py-4 whitespace-nowrap border">
-                      <Link to={`/campaign/${campaign._id}`}>
+                      <Link to={`/details/${campaign._id}`}>
                         <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
                           See More
                         </button>

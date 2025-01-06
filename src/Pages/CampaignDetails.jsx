@@ -1,13 +1,19 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
 import Swal from "sweetalert2";
+import LoadingSpinner from "../Components/LoadingSpinner";
 
 const CampaignDetails = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [donationAmount, setDonationAmount] = useState("");
+  const [showNote, setShowNote] = useState(false);
+  const modalRef = useRef(null);
+  const firstFocusableRef = useRef(null);
+  const lastFocusableRef = useRef(null);
 
   useEffect(() => {
     const fetchCampaignDetails = async () => {
@@ -31,11 +37,16 @@ const CampaignDetails = () => {
   }, [id]);
 
   const handleDonate = async () => {
-    if (!user) {
+    if (!donationAmount) {
+      setShowNote(true);
+      return;
+    }
+
+    if (parseFloat(donationAmount) < parseFloat(campaign.minDonation)) {
       Swal.fire({
-        icon: "warning",
-        title: "Not Logged In",
-        text: "Please log in to donate.",
+        icon: "error",
+        title: "Invalid Donation",
+        text: `Donation amount must be greater than $${campaign.minDonation}.`,
       });
       return;
     }
@@ -45,7 +56,7 @@ const CampaignDetails = () => {
       userEmail: user.email,
       userName: user.displayName,
       title: campaign.title,
-      amount: campaign.minDonation, // Assuming you want to donate the minimum amount
+      amount: donationAmount,
     };
 
     try {
@@ -55,22 +66,27 @@ const CampaignDetails = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(donationData),
-      });
-
-      const result = await response.json();
-      if (result.success) {
-        Swal.fire({
-          icon: "success",
-          title: "Donation Successful!",
-          text: "Thank you for your donation.",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.insertedId) {
+            Swal.fire({
+              icon: "success",
+              title: "Donation Successful!",
+              text: "Thank you for your donation.",
+            });
+            setDonationAmount("");
+            setShowNote(false);
+            document.getElementById("my_modal_5").close();
+          } else {
+            document.getElementById("my_modal_5").close();
+            Swal.fire({
+              icon: "error",
+              title: "Donation Failed",
+              text: result.message,
+            });
+          }
         });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Donation Failed",
-          text: result.message,
-        });
-      }
     } catch (error) {
       console.error("Error processing donation:", error);
       Swal.fire({
@@ -81,31 +97,125 @@ const CampaignDetails = () => {
     }
   };
 
+  const openModal = () => {
+    document.getElementById("my_modal_5").showModal();
+    firstFocusableRef.current.focus(); // Focus the first element in the modal
+  };
+
+  const closeModal = () => {
+    document.getElementById("my_modal_5").close();
+    setDonationAmount("");
+    setShowNote(false);
+  };
+
+  const handleKeyDown = (event) => {
+    const focusableElements = modalRef.current.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.key === "Tab") {
+      if (event.shiftKey) {
+        // Shift + Tab
+        if (document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Tab
+        if (document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
+    }
+  };
+
   if (loading) {
-    return <div className="text-center">Loading campaign details...</div>;
+    return <LoadingSpinner />;
   }
 
   if (!campaign) {
-    return <div className="text-center">Campaign not found.</div>;
+    return <div className="text-center text-4xl p-9">Campaign not found.</div>;
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">{campaign.title}</h1>
-      <p className="text-lg mb-2"><strong>Type:</strong> {campaign.type}</p>
-      <p className="text-lg mb-2"><strong>Description:</strong> {campaign.description}</p>
-      <p className="text-lg mb-2"><strong>Minimum Donation:</strong> ${campaign.minDonation}</p>
-      <p className="text-lg mb-2"><strong>Deadline:</strong> {new Date(campaign.deadline).toLocaleDateString()}</p>
-      <img src={campaign.thumbnail} alt={campaign.title} className="w-full h-auto rounded-lg mb-4" />
+    <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto campaign-details">
+      <img
+        src={campaign.thumbnail}
+        alt={campaign.title}
+        className="w-full h-[300px] object-cover rounded-lg mb-4"
+      />
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl font-bold text-gray-800">{campaign.title}</h1>
+        <div className="text-lg font-medium text-gray-600">
+          <span className="mr-2 text-blue-600 font-semibold">Deadline:</span>
+          <span className="text-gray-800">
+            {new Date(campaign.deadline).toLocaleDateString()}
+          </span>
+        </div>
+      </div>
+      <p className="text-lg mb-2">
+        <strong className="text-gray-800">Type:</strong> {campaign.type}
+      </p>
+      <p className="text-lg mb-2 description">
+        <strong className="text-gray-800">Description:</strong>{" "}
+        {campaign.description}
+      </p>
+      <div className="flex justify-between items-center mb-4">
+        <p className="text-lg font-bold text-blue-600">
+          <strong>Minimum Donation:</strong> ${campaign.minDonation}
+        </p>
+      </div>
       <button
-        onClick={handleDonate}
-        className="btn bg-blue-600 text-white hover:bg-blue-700 transition duration-300"
+        onClick={openModal}
+        className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300 px-6 py-3 rounded-lg w-full shadow-md"
       >
         Donate
       </button>
-      <Link to="/campaigns">
-        <button className="btn btn-ghost mt-4">Back to All Campaigns</button>
-      </Link>
+      <dialog
+        id="my_modal_5"
+        className="modal modal-bottom sm:modal-middle"
+        ref={modalRef}
+        onKeyDown={handleKeyDown}
+      >
+        <div className="modal-box p-6 rounded-lg shadow-lg bg-white">
+          <h3 className="font-bold text-lg text-center">
+            Enter Donation Amount
+          </h3>
+          <input
+            type="number"
+            value={donationAmount}
+            onChange={(e) => {
+              setDonationAmount(e.target.value);
+              setShowNote(false);
+            }}
+            className="input input-bordered w-full mt-4 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter amount"
+            ref={firstFocusableRef}
+          />
+          {showNote && (
+            <div className="mt-2 text-red-600 text-center">
+              <p>Please enter a donation amount.</p>
+            </div>
+          )}
+          <div className="modal-action mt-4">
+            <button
+              className="btn bg-blue-600 text-white hover:bg-blue-700"
+              onClick={handleDonate}
+            >
+              Confirm Donation
+            </button>
+            <button
+              className="btn bg-gray-300 text-gray-700 hover:bg-gray-400"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };
