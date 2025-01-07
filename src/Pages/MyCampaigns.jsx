@@ -2,8 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
-import moment from 'moment'; 
-import LoadingSpinner from "../Components/LoadingSpinner"; 
+import moment from "moment";
+import LoadingSpinner from "../Components/LoadingSpinner";
 const MyCampaigns = () => {
   const { user } = useContext(AuthContext);
   const [campaigns, setCampaigns] = useState([]);
@@ -12,7 +12,9 @@ const MyCampaigns = () => {
   useEffect(() => {
     const fetchMyCampaigns = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/Campaigns/email/${user.email}`);
+        const response = await fetch(
+          `http://localhost:5000/Campaigns/email/${user.email}`
+        );
         const data = await response.json();
 
         // Check if data is an array
@@ -53,13 +55,18 @@ const MyCampaigns = () => {
 
     if (confirmDelete.isConfirmed) {
       try {
-        const response = await fetch(`http://localhost:5000/campaigns/${campaignId}`, {
-          method: "DELETE",
-        });
+        const response = await fetch(
+          `http://localhost:5000/campaigns/${campaignId}`,
+          {
+            method: "DELETE",
+          }
+        );
         const result = await response.json();
-        if (result.success) {
+        if (result.deletedCount) {
           Swal.fire("Deleted!", "Your campaign has been deleted.", "success");
-          setCampaigns(campaigns.filter(campaign => campaign._id !== campaignId));
+          setCampaigns(
+            campaigns.filter((campaign) => campaign._id !== campaignId)
+          );
         } else {
           Swal.fire("Error!", result.message, "error");
         }
@@ -69,6 +76,9 @@ const MyCampaigns = () => {
       }
     }
   };
+  if (loading) {
+    return <LoadingSpinner />;
+}
 
   return (
     <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 min-h-screen">
@@ -81,11 +91,11 @@ const MyCampaigns = () => {
             Here are your active campaigns.
           </p>
         </div>
-
-        {loading ? (
-          <div className="text-center">
-            <LoadingSpinner />
-          </div>
+        
+        {campaigns.length === 0 ? (
+          <p className="text-center text-gray-600 text-xl">
+            You have not made any Campaign yet.
+          </p>
         ) : (
           <div className="overflow-x-auto rounded-lg shadow-md">
             <table className="w-full table-auto border-collapse border border-gray-300">
@@ -129,13 +139,18 @@ const MyCampaigns = () => {
                       ${campaign.minDonation}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap border">
-                      {campaign.createdAt ? moment(campaign.createdAt).format('MMMM Do YYYY') : 'N/A'}
+                      {campaign.createdAt
+                        ? moment(campaign.createdAt).format("MMMM Do YYYY")
+                        : "N/A"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap border">
                       {new Date(campaign.deadline).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap border flex space-x-2">
-                      <Link to={`/update-campaign/${campaign._id}`} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
+                      <Link
+                        to={`/update-campaign/${campaign._id}`}
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300"
+                      >
                         Update
                       </Link>
                       <button

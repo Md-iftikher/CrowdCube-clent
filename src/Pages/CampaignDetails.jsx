@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
 import Swal from "sweetalert2";
 import LoadingSpinner from "../Components/LoadingSpinner";
@@ -66,27 +66,27 @@ const CampaignDetails = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(donationData),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.insertedId) {
-            Swal.fire({
-              icon: "success",
-              title: "Donation Successful!",
-              text: "Thank you for your donation.",
-            });
-            setDonationAmount("");
-            setShowNote(false);
-            document.getElementById("my_modal_5").close();
-          } else {
-            document.getElementById("my_modal_5").close();
-            Swal.fire({
-              icon: "error",
-              title: "Donation Failed",
-              text: result.message,
-            });
-          }
+      });
+
+      const data = await response.json();
+
+      if (data.insertedId) {
+        Swal.fire({
+          icon: "success",
+          title: "Donation Successful!",
+          text: "Thank you for your donation.",
         });
+        setDonationAmount("");
+        setShowNote(false);
+        closeModal();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Donation Failed",
+          text: data.message || "An error occurred.",
+        });
+        closeModal();
+      }
     } catch (error) {
       console.error("Error processing donation:", error);
       Swal.fire({
@@ -99,7 +99,7 @@ const CampaignDetails = () => {
 
   const openModal = () => {
     document.getElementById("my_modal_5").showModal();
-    firstFocusableRef.current.focus(); // Focus the first element in the modal
+    firstFocusableRef.current.focus();
   };
 
   const closeModal = () => {
@@ -117,13 +117,11 @@ const CampaignDetails = () => {
 
     if (event.key === "Tab") {
       if (event.shiftKey) {
-        // Shift + Tab
         if (document.activeElement === firstElement) {
           event.preventDefault();
           lastElement.focus();
         }
       } else {
-        // Tab
         if (document.activeElement === lastElement) {
           event.preventDefault();
           firstElement.focus();
@@ -139,6 +137,9 @@ const CampaignDetails = () => {
   if (!campaign) {
     return <div className="text-center text-4xl p-9">Campaign not found.</div>;
   }
+
+  // Check if the deadline has passed
+  const isDeadlinePassed = new Date(campaign.deadline) < new Date();
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto campaign-details">
@@ -168,12 +169,26 @@ const CampaignDetails = () => {
           <strong>Minimum Donation:</strong> ${campaign.minDonation}
         </p>
       </div>
-      <button
-        onClick={openModal}
-        className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300 px-6 py-3 rounded-lg w-full shadow-md"
-      >
-        Donate
-      </button>
+      {isDeadlinePassed ? (
+        <div className="text-red-600 text-center mt-4 flex flex-col gap-5">
+          <p>
+            Unfortunately, the deadline for this campaign has passed. You cannot
+            make a donation at this time.
+          </p>
+          <div >
+            <button className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300 px-6 py-3 rounded-lg w-full shadow-md">
+              <Link to="/all-campaigns">Back to Campaigns</Link>
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={openModal}
+          className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300 px-6 py-3 rounded-lg w-full shadow-md"
+        >
+          Donate
+        </button>
+      )}
       <dialog
         id="my_modal_5"
         className="modal modal-bottom sm:modal-middle"

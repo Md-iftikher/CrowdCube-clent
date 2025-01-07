@@ -11,6 +11,7 @@ import PrivateRoutes from "./PrivateRoutes ";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import AddNewCampaign from "../Pages/AddNewCampaign";
+import UpdateCampaign from "../Components/UpdateCampaign";
 
 const AppRouter = () => {
   const router = createBrowserRouter([
@@ -49,6 +50,14 @@ const AppRouter = () => {
           element: (
             <PrivateRoutes>
               <CampaignDetails></CampaignDetails>
+            </PrivateRoutes>
+          ),
+        },
+        {
+          path: "/update-campaign/:id",
+          element: (
+            <PrivateRoutes>
+              <UpdateCampaign></UpdateCampaign>
             </PrivateRoutes>
           ),
         },

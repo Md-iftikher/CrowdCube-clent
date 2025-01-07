@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import LoadingSpinner from "../Components/LoadingSpinner";
-import moment from 'moment'; // Import moment.js
+import moment from 'moment';
 
 const AllCampaigns = () => {
   const [campaigns, setCampaigns] = useState([]);
@@ -24,7 +24,7 @@ const AllCampaigns = () => {
       } finally {
         setTimeout(() => {
           setLoading(false);
-        }, 3000);
+        }, 1000);
       }
     };
 

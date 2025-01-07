@@ -64,10 +64,12 @@ const AddNewCampaign = () => {
             title: "Campaign Added!",
             text: "Your campaign has been successfully added.",
           });
+          setFormData({});
+
         }
       });
 
-    // navigate("/dashboard");
+    navigate("/all-campaigns");
   };
 
   return (
@@ -79,7 +81,7 @@ const AddNewCampaign = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="label">
-              <span className="label-text">Image URL</span>
+              <span className="label-text block text-sm font-medium text-gray-700">Image URL</span>
             </label>
             <input
               type="url"
@@ -93,7 +95,7 @@ const AddNewCampaign = () => {
           </div>
           <div>
             <label className="label">
-              <span className="label-text">Campaign Title</span>
+              <span className="label-text block text-sm font-medium text-gray-700">Campaign Title</span>
             </label>
             <input
               type="text"
@@ -107,7 +109,7 @@ const AddNewCampaign = () => {
           </div>
           <div>
             <label className="label">
-              <span className="label-text">Campaign Type</span>
+              <span className="label-text block text-sm font-medium text-gray-700">Campaign Type</span>
             </label>
             <select
               name="type"
@@ -125,7 +127,7 @@ const AddNewCampaign = () => {
           </div>
           <div>
             <label className="label">
-              <span className="label-text">Description</span>
+              <span className="label-text block text-sm font-medium text-gray-700">Description</span>
             </label>
             <textarea
               name="description"
@@ -138,7 +140,7 @@ const AddNewCampaign = () => {
           </div>
           <div>
             <label className="label">
-              <span className="label-text">Minimum Donation Amount</span>
+              <span className="label-text block text-sm font-medium text-gray-700">Minimum Donation Amount</span>
             </label>
             <input
               type="number"
@@ -152,7 +154,7 @@ const AddNewCampaign = () => {
           </div>
           <div>
             <label className="label">
-              <span className="label-text">Deadline</span>
+              <span className="label-text block text-sm font-medium text-gray-700">Deadline</span>
             </label>
             <input
               type="date"
@@ -165,7 +167,7 @@ const AddNewCampaign = () => {
           </div>
           <div>
             <label className="label">
-              <span className="label-text">User Email</span>
+              <span className="label-text block text-sm font-medium text-gray-700">User Email</span>
             </label>
             <input
               type="email"
@@ -176,7 +178,7 @@ const AddNewCampaign = () => {
           </div>
           <div>
             <label className="label">
-              <span className="label-text">User Name</span>
+              <span className="label-text block text-sm font-medium text-gray-700">User Name</span>
             </label>
             <input
               type="text"
