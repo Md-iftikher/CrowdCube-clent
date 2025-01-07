@@ -12,6 +12,7 @@ import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import AddNewCampaign from "../Pages/AddNewCampaign";
 import UpdateCampaign from "../Components/UpdateCampaign";
+import HomePage from "../Pages/HomePage";
 
 const AppRouter = () => {
   const router = createBrowserRouter([
@@ -20,7 +21,7 @@ const AppRouter = () => {
       element: <Home />,
       children: [
         { path: "/all-campaigns", element: <AllCampaigns /> },
-        // { path: "/add-new-campaign", element: <AddNewCampaign /> },
+        { path: "/", element: <HomePage /> },
         {
           path: "/my-campaigns",
           element: (
