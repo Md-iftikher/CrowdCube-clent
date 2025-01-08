@@ -49,7 +49,7 @@ const AddNewCampaign = () => {
     };
     console.log(newCampaign);
 
-    fetch("http://localhost:5000/Addcampaigns", {
+    fetch("https://crowdcube-server-ruddy.vercel.app/Addcampaigns", {
       method: "POST",
       headers: {
         "content-type": "application/json",

@@ -18,7 +18,7 @@ const CampaignDetails = () => {
   useEffect(() => {
     const fetchCampaignDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/campaigns/${id}`);
+        const response = await fetch(`https://crowdcube-server-ruddy.vercel.app/${id}`);
         const data = await response.json();
         setCampaign(data);
       } catch (error) {
@@ -60,7 +60,7 @@ const CampaignDetails = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/donations", {
+      const response = await fetch("https://crowdcube-server-ruddy.vercel.app/donations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

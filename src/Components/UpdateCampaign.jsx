@@ -21,7 +21,7 @@ const UpdateCampaign = () => {
   useEffect(() => {
     const fetchCampaign = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/campaigns/${id}`);
+        const response = await fetch(`https://crowdcube-server-ruddy.vercel.app/${id}`);
         const data = await response.json();
         if (data) {
           setCampaign(data);
@@ -58,7 +58,7 @@ const UpdateCampaign = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/campaigns/${id}`, {
+      const response = await fetch(`https://crowdcube-server-ruddy.vercel.app/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

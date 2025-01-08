@@ -13,7 +13,7 @@ const MyCampaigns = () => {
     const fetchMyCampaigns = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/Campaigns/email/${user.email}`
+          `https://crowdcube-server-ruddy.vercel.app/Campaigns/email/${user.email}`
         );
         const data = await response.json();
 
@@ -56,7 +56,7 @@ const MyCampaigns = () => {
     if (confirmDelete.isConfirmed) {
       try {
         const response = await fetch(
-          `http://localhost:5000/campaigns/${campaignId}`,
+          `https://crowdcube-server-ruddy.vercel.app/campaigns/${campaignId}`,
           {
             method: "DELETE",
           }
