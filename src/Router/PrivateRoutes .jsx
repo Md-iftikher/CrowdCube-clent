@@ -16,7 +16,7 @@ const PrivateRoutes = ({ children }) => {
                 icon: 'warning',
                 confirmButtonText: 'Go to Login',
             }).then(() => {
-                setAlertShown(false); // Reset alert for future redirects
+                setAlertShown(false);
             });
         }
 

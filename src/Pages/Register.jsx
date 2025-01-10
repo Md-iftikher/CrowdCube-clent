@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; 
 import { AuthContext } from "../Provider/AuthProvider"; 
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 import { FaGoogle } from 'react-icons/fa';
 
 const Register = () => {

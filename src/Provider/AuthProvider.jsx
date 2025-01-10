@@ -101,7 +101,7 @@ const AuthProvider = ({ children }) => {
     details
   };
 
-  // Monitor authentication state
+  // Monitoring authentication state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser ) => {
       setUser (currentUser );

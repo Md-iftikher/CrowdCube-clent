@@ -148,11 +148,14 @@ const Navbar = () => {
             //className="btn bg-blue-600 border-none text-white hidden md:inline"
           >
             <div className="hidden md:inline">
-              <button className="btn bg-blue-600 border-none text-white">Login</button>
+              <button className="btn bg-blue-600 border-none text-white">
+                Login
+              </button>
             </div>
           </Link>
         )}
 
+        {/* mobile dropdown */}
         <div className="dropdown md:hidden">
           <div tabIndex={0} role="button" className="btn btn-ghost">
             <svg
