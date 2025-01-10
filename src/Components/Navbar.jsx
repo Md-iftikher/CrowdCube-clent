@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import ProfileIcon from "../assets/image.png";
 import { AuthContext } from "../Provider/AuthProvider";
 import { ThemeContext } from "./ThemeContext";
+// import logo from "../assets/hand-heart_10200407.png";
 
 const Navbar = () => {
   const { user, handleLogOut } = useContext(AuthContext);
@@ -21,8 +22,11 @@ const Navbar = () => {
       } text-white flex justify-between items-center p-4 px-14`}
     >
       <div className="navbar-start">
-        <Link to="/" className="flex justify-center items-center font-bold">
-          <h2>CrowdCube</h2>
+        <Link to="/" className="flex justify-center items-center gap-2">
+          {/* <img className="w-8 h-8 md:w-12 md:h-12" src={logo} alt="Logo" /> */}
+          <div className="grid gap-0 font-bold md:text-xl">
+            <h2>CrowdCube</h2>
+          </div>
         </Link>
       </div>
 
@@ -108,7 +112,6 @@ const Navbar = () => {
             onChange={toggleTheme}
             checked={theme === "dark"}
           />
-
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -135,15 +138,98 @@ const Navbar = () => {
         {user && user.email ? (
           <button
             onClick={handleLogOut}
-            className="btn bg-blue-600 border-none text-white"
+            className="btn bg-blue-600 border-none text-white hidden md:inline"
           >
             Log Out
           </button>
         ) : (
-          <Link to="/login" className="btn bg-blue-600 border-none text-white">
-            Log In
+          <Link
+            to="/login"
+            //className="btn bg-blue-600 border-none text-white hidden md:inline"
+          >
+            <div className="hidden md:inline">
+              <button className="btn bg-blue-600 border-none text-white">Login</button>
+            </div>
           </Link>
         )}
+
+        <div className="dropdown md:hidden">
+          <div tabIndex={0} role="button" className="btn btn-ghost">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h8m-8 6h16"
+              />
+            </svg>
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-xs bg-blue-500 dropdown-content w-48 rounded-box z-[1] mt-3 p-2 shadow right-[-55px]"
+          >
+            <li>
+              <Link to="/" onClick={() => handleLinkClick("/")}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/all-campaigns"
+                onClick={() => handleLinkClick("/all-campaigns")}
+              >
+                All Campaigns
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/add-new-campaign"
+                onClick={() => handleLinkClick("/add-new-campaign")}
+              >
+                Add New Campaign
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/my-campaigns"
+                onClick={() => handleLinkClick("/my-campaigns")}
+              >
+                My Campaigns
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/my-donations"
+                onClick={() => handleLinkClick("/my-donations")}
+              >
+                My Donations
+              </Link>
+            </li>
+            <li>
+              {user && user.email ? (
+                <button
+                  onClick={handleLogOut}
+                  className="btn bg-blue-600 border-none text-white"
+                >
+                  Log Out
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="btn bg-blue-600 border-none text-white flex items-center justify-center"
+                >
+                  Log In
+                </Link>
+              )}
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   );

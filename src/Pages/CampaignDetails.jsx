@@ -18,7 +18,7 @@ const CampaignDetails = () => {
   useEffect(() => {
     const fetchCampaignDetails = async () => {
       try {
-        const response = await fetch(`https://crowdcube-server-ruddy.vercel.app/${id}`);
+        const response = await fetch(`https://crowdcube-server-ruddy.vercel.app/campaigns/${id}`);
         const data = await response.json();
         setCampaign(data);
       } catch (error) {

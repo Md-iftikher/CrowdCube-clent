@@ -47,7 +47,7 @@ const AddNewCampaign = () => {
       userName,
       thumbnail,
     };
-    console.log(newCampaign);
+    // console.log(newCampaign);
 
     fetch("https://crowdcube-server-ruddy.vercel.app/Addcampaigns", {
       method: "POST",
@@ -79,20 +79,7 @@ const AddNewCampaign = () => {
           Add New Campaign
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="label">
-              <span className="label-text block text-sm font-medium text-gray-700">Image URL</span>
-            </label>
-            <input
-              type="url"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              required
-              className="input input-bordered w-full"
-              placeholder="Enter image URL"
-            />
-          </div>
+         
           <div>
             <label className="label">
               <span className="label-text block text-sm font-medium text-gray-700">Campaign Title</span>
@@ -150,6 +137,20 @@ const AddNewCampaign = () => {
               required
               className="input input-bordered w-full"
               placeholder="Enter minimum donation amount"
+            />
+          </div>
+          <div>
+            <label className="label">
+              <span className="label-text block text-sm font-medium text-gray-700">Image URL</span>
+            </label>
+            <input
+              type="url"
+              name="image"
+              value={formData.image}
+              onChange={handleChange}
+              required
+              className="input input-bordered w-full"
+              placeholder="Enter image URL"
             />
           </div>
           <div>
